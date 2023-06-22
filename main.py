@@ -1,10 +1,14 @@
 import os
 import random
 
+# PARA DEBUG PARA A IMPRESSAO DOS NUMEROS ALEATORIOS
+DEBUG = True
+
+
 class Game:
     def __init__(self):
         self.reset_game_variables()
-    
+
     def reset_game_variables(self):
         # generating essential game variables and the main table
         self.random_positions_divisible_by_5 = []
@@ -22,8 +26,7 @@ class Game:
                 if not line in self.player_table:
                     self.player_table[line] = {}
 
-                self.player_table[line][collum] = ''
-  
+                self.player_table[line][collum] = ' '
 
     def menu(self, type='menu'):
         while True:
@@ -32,7 +35,8 @@ class Game:
                 os.system('cls')
                 print('Para continuar a partida digite [c]')
             else:
-                print('Parabens Voçê venceu!' if type=='victory' else 'Fim de Jogo!')
+                print('\n', 'PARABENS! VOCE VENCÊU!' if type ==
+                      'victory' else 'FIM DE JOGO!')
 
             print('Para iniciar um novo jogo digite [n]')
             print('Para sair do jogo digite [e]\n')
@@ -40,8 +44,8 @@ class Game:
             user_input = input('Sua entrada: ').lower()
 
             # checking user input
+            os.system('cls')
             if user_input == 'c':
-                os.system('cls')
                 return
             elif user_input == 'n':
                 return self.reset_game_variables()
@@ -60,7 +64,6 @@ class Game:
             line, collum = int(line), int(collum)
         except:
             self.feedback = 'Nao foram digitados os valores de linha e coluna corretamente ({numero da linha} {numero da coluna})'
-            return 'continue'
 
         # accessing row value and corresponding column
         self.player_life -= 1
@@ -74,13 +77,14 @@ class Game:
 
         # checking if there is still any number divisible by 5, if there is not the player won
         if not self.random_positions_divisible_by_5:
-            print('Voce ganhou!')
-            return 'break'
+            self.menu(type='victory')
         else:
             os.system('cls')
 
     def print_player_table(self):
-        print(self.random_positions_divisible_by_5)
+        if DEBUG:
+            print('Posicoes multiplas de 5 restantes:',
+                  self.random_positions_divisible_by_5)
         print('Precione [m] para Acessar o Menu.')
         print(f'Jogadas Restantes: {self.player_life}\n')
 
@@ -95,8 +99,7 @@ class Game:
         # printing the direction and player lines
         for line in range(1, 8):
             print(line, sep='\n', end=' ')
-            print(*self.player_table[line].values(), sep='  ')
-   
+            print(*self.player_table[line].values(), sep=' ')
 
     def mainloop(self):
         self.feedback = None
@@ -104,14 +107,12 @@ class Game:
             self.print_player_table()
             # checking gameover
             if self.player_life < 1:
-                print('Fim de jogo: Voce perdeu')
-                break
+                self.menu(type='gameover')
 
             # main user input
             user_input = input('Sua entrada: ').lower()
             if user_input:
-                input_return = self.user_input_checker(user_input)
-                if input_return == 'continue':
-                    continue
+                self.user_input_checker(user_input)
+
 
 Game().mainloop()
