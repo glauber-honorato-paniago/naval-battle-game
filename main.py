@@ -1,9 +1,8 @@
 import os
 import random
 
-# PARA DEBUG PARA A IMPRESSAO DOS NUMEROS ALEATORIOS
+# FOR DEBUG FOR PRINTING RANDOM NUMBERS
 DEBUG = True
-
 
 class Game:
     def __init__(self):
@@ -67,13 +66,14 @@ class Game:
 
         # accessing row value and corresponding column
         self.player_life -= 1
-
-        if (line, collum) in self.random_positions_divisible_by_5:
-            self.player_table[line][collum] = 'x'
-            self.random_positions_divisible_by_5.remove((line, collum))
-
-        else:
-            self.player_table[line][collum] = '0'
+        try:
+            if (line, collum) in self.random_positions_divisible_by_5:
+                self.player_table[line][collum] = 'x'
+                self.random_positions_divisible_by_5.remove((line, collum))
+            else:
+                self.player_table[line][collum] = '0'
+        except:
+            self.feedback = 'Posição invalida!'
 
         # checking if there is still any number divisible by 5, if there is not the player won
         if not self.random_positions_divisible_by_5:
