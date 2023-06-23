@@ -110,9 +110,8 @@ class Game:
                 self.menu(type='gameover')
 
             # main user input
-            user_input = input('Sua entrada: ').lower()
-            if user_input:
-                self.user_input_checker(user_input)
+            user_input = input('Digite a linha e a coluna separadas por um espaço: ').lower()
+            self.user_input_checker(user_input)
 
 
 Game().mainloop()
